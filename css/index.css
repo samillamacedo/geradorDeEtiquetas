@@ -1,0 +1,24 @@
+.invisible {
+  visibility: hidden;
+}
+
+h3 {
+	text-align: center;
+  margin-top: 2rem;
+}
+
+input[type="button"] {
+  margin-bottom: 0;
+}
+.center {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+
+}
+.visualize{
+	width: 100%;
+	height: 30%;
+	border: 1px solid #E1E1E1;
+	border-radius: 10px;
+}

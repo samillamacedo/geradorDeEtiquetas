@@ -1,0 +1,106 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gerador de etiquetas de preço</title>
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/index.css">
+  
+    <script type="text/javascript" src="./js/index.js"></script>
+</head>
+<body>
+  <div class="center"><img src="./img/LogoMacedo.png" width="100%" ></div>
+  <div class="container">
+    <h3>Gerador de etiquetas de preço</h3>
+    <div class="row">
+      <div class="twelve columns">
+        <label for="firstname">Instruções</label>
+        <div class="u-full-width">
+          1. Clique em "chose File", procure a nota no seu computador e aperte "ok" para carregar o arquivo<br>
+          2. Confira se a nota visualizada está correta e clique em salvar<br>
+          3. Clique em imprimir e selecione sua impressora de etiquetas 
+        </div>
+      </div>
+      <div class="two columns">
+        <label for="add" class="invisible">x</label>
+      </div>
+    </div>
+    <input class="button-primary" value="Escolher nota" id="salvar" type="file"/>
+    <div id="list" class="visualize"></div>
+    <div class="two columns">
+      <label for="add" class="invisible">x</label>
+      <input class="button-primary" value="salvar" id="salvar" type="button" onclick="saveFile()"/>
+    </div>
+    <div class="two columns">
+      <label for="add" class="invisible">x</label>
+      <input class="button-primary" value="gerar" id="gerar" type="button"/>
+    </div>
+    <div class="two columns">
+      <label for="add" class="invisible">x</label>
+      <input class="button-primary" value="imprimir" id="imprimir" type="button">
+    </div>
+  </div>
+
+
+
+<script type="text/javascript">
+  function saveFile()
+{
+    var textToSave = document.getElementById("salvar").files[0];
+    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = "Nota.html";
+ 
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+ 
+    downloadLink.click();
+}
+
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<iframe class="thumb" height="100%" width = "100%" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('salvar').addEventListener('change', handleFileSelect, false);
+</script>
+ <script type="text/javascript">
+    var remote = require('electron').remote;
+    document.addEventListener('keydown', function (e) {
+      if (e.which === 123) {
+        remote.getCurrentWindow().webContents.openDevTools();
+      } else if (e.which === 116) {
+        location.reload();
+      }
+    });
+</script>
+</body>
+</html>
